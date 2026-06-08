@@ -1,7 +1,7 @@
 ## Hi there 👋 It's me Sudharsun V
 
 Aspiring Software Engineer @ Google
-<img align="right" width="370" height="290" src="https://private-user-images.githubusercontent.com/74038190/240815068-993370af-11f4-48e7-9e0d-e5b79c2e7890.gif?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODA4OTE2NDEsIm5iZiI6MTc4MDg5MTM0MSwicGF0aCI6Ii83NDAzODE5MC8yNDA4MTUwNjgtOTkzMzcwYWYtMTFmNC00OGU3LTllMGQtZTViNzljMmU3ODkwLmdpZj9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA2MDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwNjA4VDA0MDIyMVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQ4ZDZlZmE4ZmQxMDdiNjRlMjViNTNlN2EyZDI4YzdlNWNhNjBhZGFkMzkxN2NhOTc1MzExYmJmMThlNzk4ZTYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRmdpZiJ9.yxuybpxV5YDiL0kD1u8bbu7rBiy7mNSf1d8_WAiUvYY">
+<img align="right" width="370" height="290" src="https://user-images.githubusercontent.com/74038190/212749447-bfb7e725-6987-49d9-ae85-2015e3e7cc41.gif">
 - 🔭 Here's my [Github](https://github.com/sudharsun-codes)                                                 
 - 🌱 I’m currently learning DSA and Competetive Programming to my workflow
 - Engineeing at [<img src="https://upload.wikimedia.org/wikipedia/commons/1/19/RMK_Engineering_College.gif" height="24">](https://www.rmkec.ac.in/2023/),
