@@ -3,7 +3,7 @@
 Aspiring Software Engineer @ Google
 <img align="right" width="370" height="290" src="https://i.pinimg.com/originals/47/f0/34/47f0342cec72b800463bf003eac1257e.gif">
 - 🔭 Here's my [Github](https://github.com/sudharsun-codes)                                                 
-- 🌱 I’m currently learning and Teaching DSA and Integrating AI to my workflow
+- 🌱 I’m currently learning DSA and Competetive Programming to my workflow
 - Engineeing at [<img src="https://upload.wikimedia.org/wikipedia/commons/1/19/RMK_Engineering_College.gif" height="24">](https://www.rmkec.ac.in/2023/),
 - Currently working with [<img src="https://images-platform.99static.com/FWvZUrBBgg_FQbdXlquX0lf2KSI=/500x500/top/smart/99designs-contests-attachments/28/28801/attachment_28801044" height="24">](https://catalyst.zoho.com/)
 - ⚡ Fun fact: I am Master in C++.
