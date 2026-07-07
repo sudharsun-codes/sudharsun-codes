@@ -32,11 +32,11 @@ Aspiring Software Engineer @ Google
   </a>
 </p>
 
-<p align="center">
+<!-- <p align="center">
   <a href="https://leetcode.com/u/NaanumCoderDhaan/">
     <img src="https://leetcard.jacoblin.cool/NaanumCoderDhaan?theme=dark&font=Baloo&ext=contest" />
   </a>
-</p>
+</p> -->
 
 <p align="center">
   <a href="https://www.geeksforgeeks.org/profile/sudharsujn2s">
