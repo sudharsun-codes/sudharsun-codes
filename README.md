@@ -1,7 +1,9 @@
 
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&width=435&lines=Hi+there+%F0%9F%91%8B+It's+me+Sudharsun+V;Competitive+Programmer+at+CodeForces;Backend+Engineer;Aspiring+Software+Engineer+at+HFT's;Student+at+R.M.K+Engineering+College)](https://git.io/typing-svg)
+
+<img src="https://raw.githubusercontent.com/sudharsun-codes/sudharsun-codes/main/banner.svg" width="100%" alt="Hemanth Kumar B Banner"/>
+
 ##
-Hello I am Sudharsun V,
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&width=435&lines=Hi+there+%F0%9F%91%8B+It's+me+Sudharsun+V;Competitive+Programmer+at+CodeForces;Backend+Engineer;Aspiring+Software+Engineer+at+HFT's;Student+at+R.M.K+Engineering+College)](https://git.io/typing-svg)
 <img align="right" width="370" height="290" src="https://user-images.githubusercontent.com/74038190/212749447-bfb7e725-6987-49d9-ae85-2015e3e7cc41.gif">
 - 🔭 Here's my [Github](https://github.com/sudharsun-codes)                                                 
 - 🌱 I’m currently learning DSA and Competetive Programming to my workflow
