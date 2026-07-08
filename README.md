@@ -1,6 +1,6 @@
 
 
-<img src="https://raw.githubusercontent.com/sudharsun-codes/sudharsun-codes/main/banner.svg" width="100%" alt="Hemanth Kumar B Banner"/>
+<img src="https://raw.githubusercontent.com/sudharsun-codes/sudharsun-codes/main/banner.svg" width="100%" alt="SUDHARSUN V"/>
 
 ##
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&width=435&lines=Hi+there+%F0%9F%91%8B+It's+me+Sudharsun+V;Competitive+Programmer+at+CodeForces;Backend+Engineer;Aspiring+Software+Engineer+at+HFT's;Student+at+R.M.K+Engineering+College)](https://git.io/typing-svg)
