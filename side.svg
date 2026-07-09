@@ -1,653 +1,356 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Cyberpunk Competitive Programmer — Hero Scene</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" width="900" height="560">
+<defs>
+  <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#0a0704"/>
+    <stop offset="55%" stop-color="#120c06"/>
+    <stop offset="100%" stop-color="#08050300"/>
+  </linearGradient>
+  <radialGradient id="floorGlow" cx="50%" cy="0%" r="75%">
+    <stop offset="0%" stop-color="#ffb347" stop-opacity="0.20"/>
+    <stop offset="100%" stop-color="#ffb347" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="deskGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#3d2712"/>
+    <stop offset="60%" stop-color="#251708"/>
+    <stop offset="100%" stop-color="#150c04"/>
+  </linearGradient>
+  <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#ffb347" stop-opacity="0.6"/>
+    <stop offset="100%" stop-color="#ffb347" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient id="goldText" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#ffe9b8"/>
+    <stop offset="55%" stop-color="#ffb347"/>
+    <stop offset="100%" stop-color="#ff8a3d"/>
+  </linearGradient>
+  <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="4" result="blur"/>
+    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <clipPath id="clipLeft"><rect x="0" y="0" width="270" height="222" rx="8"/></clipPath>
+  <clipPath id="clipCenter"><rect x="0" y="0" width="270" height="222" rx="8"/></clipPath>
+  <clipPath id="clipRight"><rect x="0" y="0" width="250" height="222" rx="8"/></clipPath>
+</defs>
+
 <style>
-  :root{
-    --black:#07090c;
-    --dgray:#12151b;
-    --orange:#ff8a3d;
-    --gold:#ffc766;
-    --amber:#ffb347;
-    --glow:#ff9a4d;
-  }
-  *{box-sizing:border-box;}
-  html,body{
-    margin:0;padding:0;width:100%;height:100%;
-    background:var(--black);
-    overflow:hidden;
-    font-family:'Segoe UI',system-ui,sans-serif;
-  }
-  .stage{
-    position:relative;
-    width:100vw;height:100vh;
-    min-height:560px;
-    background:
-      radial-gradient(ellipse at 50% 105%, rgba(255,140,60,0.16), transparent 60%),
-      radial-gradient(ellipse at 20% -10%, rgba(255,200,120,0.08), transparent 55%),
-      linear-gradient(180deg,#05060a 0%, #0a0d12 55%, #050608 100%);
-    perspective:1400px;
-    display:flex;align-items:center;justify-content:center;
-    animation:pushIn 12s ease-in-out infinite alternate;
-  }
-  @keyframes pushIn{
-    0%{transform:scale(1);}
-    100%{transform:scale(1.045);}
+  .particle { fill: #ffc766; opacity: 0; animation-name: floatUp; animation-timing-function: linear; animation-iteration-count: infinite; }
+  @keyframes floatUp {
+    0% { transform: translateY(0); opacity: 0; }
+    10% { opacity: .8; }
+    90% { opacity: .3; }
+    100% { transform: translateY(-180px); opacity: 0; }
   }
 
-  /* ---------- FLOOR GRID ---------- */
-  .grid{
-    position:absolute;
-    left:50%;bottom:-10%;
-    width:220%;height:60%;
-    transform:translateX(-50%) rotateX(72deg);
-    background-image:
-      linear-gradient(rgba(255,150,70,0.35) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,150,70,0.35) 1px, transparent 1px);
-    background-size:60px 60px;
-    -webkit-mask-image:radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%);
-    mask-image:radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%);
-    opacity:0.35;
-    animation:gridMove 6s linear infinite;
-  }
-  @keyframes gridMove{
-    from{background-position:0 0,0 0;}
-    to{background-position:0 60px,60px 0;}
+  .scenegrp { animation: pushIn 10s ease-in-out infinite alternate; transform-origin: 450px 300px; }
+  @keyframes pushIn { 0% { transform: scale(1); } 100% { transform: scale(1.015); } }
+
+  .monitor-frame { fill:#0c0906; stroke:#3a2c18; stroke-width:1.6; }
+  .monitor-frame.active { stroke: #ffb347; stroke-opacity:0.55; }
+  .screen-label { font-family: Consolas, monospace; font-size: 9px; letter-spacing: 1.5px; fill: #ffb347; opacity:.7; text-transform:uppercase; }
+  .dot-live { fill:#ffb347; animation: dotPulse 1.6s ease-in-out infinite; }
+  @keyframes dotPulse { 0%,100% { opacity: .4; } 50% { opacity: 1; } }
+
+  .code-txt { font-family: Consolas, 'Courier New', monospace; font-size: 10.2px; fill: #f0d9a8; }
+  .code-mask { fill:#0c0906; animation-name: revealMask; animation-duration: 7s; animation-timing-function: steps(24,end); animation-iteration-count: infinite; transform-origin: left; }
+  @keyframes revealMask {
+    0% { transform: scaleX(1); }
+    32% { transform: scaleX(0); }
+    100% { transform: scaleX(0); }
   }
 
-  /* ---------- PARTICLES ---------- */
-  .particles{position:absolute;inset:0;pointer-events:none;}
-  .p{
-    position:absolute;
-    border-radius:50%;
-    background:radial-gradient(circle, var(--gold) 0%, rgba(255,180,90,0) 70%);
-    opacity:0.7;
-    animation:floatUp linear infinite;
+  .term-line { font-family: Consolas, 'Courier New', monospace; font-size: 11px; opacity:0; animation-name: termIn; animation-duration: 6.5s; animation-timing-function: ease-out; animation-iteration-count: infinite; }
+  @keyframes termIn {
+    0% { opacity:0; transform: translateY(4px); }
+    8% { opacity:1; transform: translateY(0); }
+    92% { opacity:1; }
+    100% { opacity:0; }
   }
-  @keyframes floatUp{
-    0%{transform:translateY(0) translateX(0);opacity:0;}
-    10%{opacity:0.8;}
-    90%{opacity:0.4;}
-    100%{transform:translateY(-420px) translateX(20px);opacity:0;}
-  }
+  .term-prompt { fill:#ffb347; }
+  .term-dim { fill:#a3742f; }
+  .term-ok { fill:#7ee89a; font-weight:bold; }
 
-  .smoke{
-    position:absolute;bottom:0;left:0;width:100%;height:45%;
-    background:linear-gradient(180deg, transparent, rgba(255,140,70,0.05));
-    filter:blur(6px);
-    animation:smokeDrift 10s ease-in-out infinite alternate;
-  }
-  @keyframes smokeDrift{
-    0%{transform:translateX(-2%);}
-    100%{transform:translateX(2%);}
-  }
+  .stat-num { font-family: 'Segoe UI', sans-serif; font-size:16px; font-weight:700; fill:#ffe9b8; }
+  .stat-lab { font-family: 'Segoe UI', sans-serif; font-size:6.6px; fill:#c98a4a; letter-spacing:1px; }
+  .dash-h { font-family:'Segoe UI', sans-serif; font-size:9.5px; fill:#ffb347; letter-spacing:1px; text-transform:uppercase; font-weight:600; }
 
-  /* ---------- SCENE (desk + monitors + figure) ---------- */
-  .scene{
-    position:relative;
-    width:min(1400px,96vw);
-    height:min(760px,90vh);
-    transform:rotateY(-8deg) rotateX(2deg);
-    transform-style:preserve-3d;
-  }
+  .chart-line { fill:none; stroke:#ffb347; stroke-width:2.2; stroke-dasharray:420; stroke-dashoffset:420; animation: draw 5s ease infinite; filter:url(#softGlow); }
+  @keyframes draw { 0% { stroke-dashoffset:420; } 55% { stroke-dashoffset:0; } 100% { stroke-dashoffset:0; } }
+  .chart-area { fill:url(#chartFill); opacity:0; animation: fillIn 5s ease infinite; }
+  @keyframes fillIn { 0% { opacity:0; } 55% { opacity:.85; } 100% { opacity:.85; } }
 
-  .rays{
-    position:absolute;
-    top:-10%;left:10%;
-    width:80%;height:70%;
-    background:conic-gradient(from 200deg at 50% 0%, rgba(255,170,90,0.10), transparent 18%, transparent 82%, rgba(255,170,90,0.10));
-    filter:blur(2px);
-    opacity:0.6;
-    pointer-events:none;
-    animation:rayPulse 5s ease-in-out infinite alternate;
-  }
-  @keyframes rayPulse{0%{opacity:0.35;}100%{opacity:0.65;}}
+  .kbkey { fill:#171208; }
+  .kbkey.lit { animation-name: kbFlow; animation-duration: 2.4s; animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
+  @keyframes kbFlow { 0%,100% { fill:#171208; } 50% { fill:#ffb347; } }
 
-  /* Monitors row */
-  .monitors{
-    position:absolute;
-    top:6%;left:50%;
-    transform:translateX(-50%);
-    display:flex;
-    gap:18px;
-    width:92%;
-    justify-content:center;
-    filter:drop-shadow(0 30px 60px rgba(0,0,0,0.65));
-  }
-  .monitor{
-    position:relative;
-    background:#0b0d10;
-    border:2px solid #23262c;
-    border-radius:10px;
-    box-shadow:
-      0 0 40px rgba(255,140,60,0.25),
-      inset 0 0 30px rgba(0,0,0,0.6);
-    overflow:hidden;
-  }
-  .monitor::after{
-    content:"";
-    position:absolute;inset:0;
-    background:linear-gradient(180deg, rgba(255,255,255,0.04), transparent 40%);
-    pointer-events:none;
-  }
-  .mon-left{width:30%;height:230px;transform:rotateY(14deg);}
-  .mon-center{width:36%;height:250px;transform:translateY(-4px);}
-  .mon-right{width:30%;height:230px;transform:rotateY(-14deg);}
+  .mousepulse { animation: mp 2s ease-in-out infinite; }
+  @keyframes mp { 0%,100% { opacity:.35; } 50% { opacity:1; } }
 
-  .screen-label{
-    position:absolute;top:6px;left:10px;
-    font-size:9px;letter-spacing:2px;
-    color:var(--gold);opacity:0.55;
-    font-family:'Consolas',monospace;
-    text-transform:uppercase;
-  }
+  .steam { animation: steam 3s ease-in-out infinite; transform-origin: bottom; }
+  @keyframes steam { 0%,100% { opacity:.15; transform: translateY(0); } 50% { opacity:.55; transform: translateY(-5px); } }
 
-  /* --- Left monitor: code editor --- */
-  .editor{
-    position:absolute;inset:0;
-    padding:22px 10px 8px 10px;
-    font-family:'Consolas','Courier New',monospace;
-    font-size:11px;line-height:1.55;
-    color:#e8c88a;
-    white-space:pre-wrap;
-    overflow:hidden;
-  }
-  .editor .kw{color:#ff9a4d;}
-  .editor .type{color:#ffd27a;}
-  .editor .str{color:#9fe6a0;}
-  .editor .com{color:#6b7280;}
-  .editor .fn{color:#ffcf7a;}
-  .cursor-blink{
-    display:inline-block;width:6px;height:12px;
-    background:var(--gold);
-    animation:blink 0.9s steps(1) infinite;
-    vertical-align:middle;
-  }
-  @keyframes blink{50%{opacity:0;}}
+  .figure { animation: breathe 4.2s ease-in-out infinite; transform-origin: 450px 560px; }
+  @keyframes breathe { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+  .hood { animation: tilt 5.5s ease-in-out infinite; transform-origin: 450px 372px; }
+  @keyframes tilt { 0%,100% { transform: rotate(0deg); } 30% { transform: rotate(-2deg); } 65% { transform: rotate(1.5deg); } }
+  .arm-l { animation: typeL .5s ease-in-out infinite alternate; transform-origin: 402px 452px; }
+  .arm-r { animation: typeR .46s ease-in-out infinite alternate; transform-origin: 498px 452px; }
+  @keyframes typeL { 0% { transform: rotate(-4deg); } 100% { transform: rotate(2deg); } }
+  @keyframes typeR { 0% { transform: rotate(4deg); } 100% { transform: rotate(-2deg); } }
 
-  /* --- Center monitor: terminal --- */
-  .terminal{
-    position:absolute;inset:0;
-    padding:22px 12px 10px 12px;
-    font-family:'Consolas','Courier New',monospace;
-    font-size:12px;line-height:1.7;
-    color:#ffcf9a;
-    background:radial-gradient(ellipse at 50% 0%, rgba(255,140,60,0.06), transparent 70%);
-  }
-  .terminal .prompt{color:var(--gold);}
-  .terminal .ok{color:#8fffb0;font-weight:bold;}
-  .terminal .dim{color:#a3742f;}
+  .glowpulse { animation: gp 3.4s ease-in-out infinite; }
+  @keyframes gp { 0%,100% { opacity:.5; } 50% { opacity:.9; } }
 
-  /* --- Right monitor: dashboard --- */
-  .dash{
-    position:absolute;inset:0;
-    padding:20px 12px 10px 12px;
-    font-family:'Segoe UI',sans-serif;
-    color:var(--gold);
-  }
-  .dash h4{
-    margin:0 0 8px 0;font-size:11px;letter-spacing:1px;
-    color:var(--amber);font-weight:600;text-transform:uppercase;
-  }
-  .stat-row{display:flex;gap:8px;margin-bottom:10px;}
-  .stat{
-    flex:1;background:rgba(255,150,70,0.08);
-    border:1px solid rgba(255,150,70,0.25);
-    border-radius:6px;padding:6px 8px;
-    text-align:center;
-  }
-  .stat .num{font-size:15px;font-weight:700;color:#ffdca0;}
-  .stat .lab{font-size:8px;color:#c98a4a;letter-spacing:1px;}
-  .chart-wrap{height:90px;position:relative;}
-  .chart-wrap svg{width:100%;height:100%;}
-  .chart-line{
-    fill:none;stroke:var(--orange);stroke-width:2;
-    stroke-dasharray:400;stroke-dashoffset:400;
-    animation:draw 4s ease forwards infinite;
-    filter:drop-shadow(0 0 4px rgba(255,150,70,0.8));
-  }
-  @keyframes draw{
-    0%{stroke-dashoffset:400;}
-    60%{stroke-dashoffset:0;}
-    100%{stroke-dashoffset:0;}
-  }
-  .chart-fill{
-    fill:url(#fillGrad);
-    opacity:0;
-    animation:fadeFill 4s ease forwards infinite;
-  }
-  @keyframes fadeFill{
-    0%{opacity:0;}
-    60%{opacity:0.35;}
-    100%{opacity:0.35;}
-  }
-
-  /* Screen glow bounce onto desk */
-  .glow-bounce{
-    position:absolute;
-    top:34%;left:50%;
-    transform:translateX(-50%);
-    width:70%;height:40%;
-    background:radial-gradient(ellipse at 50% 0%, rgba(255,150,70,0.28), transparent 70%);
-    filter:blur(10px);
-    pointer-events:none;
-    animation:glowPulse 3.4s ease-in-out infinite;
-  }
-  @keyframes glowPulse{
-    0%,100%{opacity:0.6;}
-    50%{opacity:0.95;}
-  }
-
-  /* ---------- DESK ---------- */
-  .desk{
-    position:absolute;
-    bottom:6%;left:50%;
-    transform:translateX(-50%);
-    width:96%;height:30%;
-    background:linear-gradient(180deg,#3a2416 0%, #241609 60%, #150c05 100%);
-    border-radius:6px;
-    box-shadow:0 20px 50px rgba(0,0,0,0.7), inset 0 4px 10px rgba(255,150,70,0.06);
-  }
-  .desk::before{
-    content:"";
-    position:absolute;top:0;left:0;right:0;height:40%;
-    background:linear-gradient(180deg, rgba(255,170,100,0.18), transparent);
-    border-radius:6px 6px 0 0;
-  }
-
-  .desk-item{position:absolute;}
-
-  /* keyboard */
-  .keyboard{
-    width:22%;height:22px;
-    left:26%;top:18%;
-    border-radius:4px;
-    background:#0c0d10;
-    border:1px solid #2a2c31;
-    display:grid;
-    grid-template-columns:repeat(16,1fr);
-    gap:1.5px;
-    padding:2px;
-    box-shadow:0 6px 14px rgba(0,0,0,0.5);
-  }
-  .kb-key{
-    background:#161820;border-radius:1.5px;
-  }
-  .kb-key.lit{
-    animation:kbFlow 2.6s linear infinite;
-  }
-  @keyframes kbFlow{
-    0%,100%{background:#161820;}
-    50%{background:var(--orange);box-shadow:0 0 5px var(--orange);}
-  }
-
-  /* mouse */
-  .mouse{
-    width:3.4%;height:22px;
-    left:52%;top:18%;
-    border-radius:6px 6px 8px 8px;
-    background:#111318;
-    border:1px solid #2a2c31;
-    box-shadow:0 0 8px 1px var(--orange);
-    animation:mousePulse 2s ease-in-out infinite;
-  }
-  @keyframes mousePulse{
-    0%,100%{box-shadow:0 0 4px 0px rgba(255,150,70,0.4);}
-    50%{box-shadow:0 0 12px 3px rgba(255,150,70,0.9);}
-  }
-
-  /* mug */
-  .mug{
-    width:3%;height:20px;
-    left:14%;top:12%;
-    background:linear-gradient(180deg,#2b2f38,#15171c);
-    border-radius:3px 3px 6px 6px;
-    border:1px solid #3a3d44;
-  }
-  .mug::after{
-    content:"";position:absolute;top:-8px;left:2px;
-    width:60%;height:6px;
-    background:linear-gradient(180deg, rgba(255,255,255,0.15), transparent);
-    border-radius:50%;
-    filter:blur(1px);
-    animation:steam 3s ease-in-out infinite;
-  }
-  @keyframes steam{0%,100%{opacity:0.2;transform:translateY(0);}50%{opacity:0.6;transform:translateY(-4px);}}
-
-  /* headphones */
-  .headphones{
-    width:5%;height:16px;
-    left:82%;top:10%;
-    border:2px solid #3a3d44;
-    border-bottom:none;
-    border-radius:50% 50% 0 0 / 100% 100% 0 0;
-  }
-  .headphones::before,.headphones::after{
-    content:"";position:absolute;bottom:-4px;width:5px;height:8px;
-    background:#26282e;border-radius:2px;
-    box-shadow:0 0 4px rgba(255,150,70,0.3);
-  }
-  .headphones::before{left:-2px;}
-  .headphones::after{right:-2px;}
-
-  /* phone */
-  .phone{
-    width:2.2%;height:16px;
-    left:74%;top:16%;
-    background:#0e0f12;
-    border:1px solid #2c2e33;
-    border-radius:3px;
-    box-shadow:0 0 5px rgba(255,150,70,0.15);
-  }
-  .phone::after{
-    content:"";position:absolute;inset:2px;
-    background:linear-gradient(160deg, rgba(255,150,70,0.25), transparent 60%);
-    border-radius:2px;
-    animation:phoneFlicker 4s ease-in-out infinite;
-  }
-  @keyframes phoneFlicker{0%,100%{opacity:0.3;}50%{opacity:0.7;}}
-
-  /* notebook */
-  .notebook{
-    width:6%;height:10px;
-    left:64%;top:22%;
-    background:#1c1508;
-    border:1px solid #3a2a12;
-    border-radius:2px;
-  }
-  .notebook::before{
-    content:"";position:absolute;left:2px;right:2px;top:3px;height:1px;background:#4a341a;
-  }
-
-  /* ---------- PROGRAMMER SILHOUETTE ---------- */
-  .figure{
-    position:absolute;
-    bottom:2%;left:50%;
-    transform:translateX(-50%);
-    width:34%;
-    height:52%;
-    animation:breathe 4.2s ease-in-out infinite;
-    transform-origin:bottom center;
-  }
-  @keyframes breathe{
-    0%,100%{transform:translateX(-50%) translateY(0) rotate(0deg);}
-    50%{transform:translateX(-50%) translateY(-2px) rotate(0.4deg);}
-  }
-  .torso{
-    position:absolute;bottom:0;left:50%;
-    transform:translateX(-50%);
-    width:78%;height:70%;
-    background:linear-gradient(180deg,#191b20 0%, #0d0e11 100%);
-    border-radius:38% 38% 10% 10%;
-    box-shadow:
-      inset 0 10px 20px rgba(255,140,60,0.10),
-      0 0 40px rgba(0,0,0,0.6);
-  }
-  .hood{
-    position:absolute;
-    bottom:56%;left:50%;
-    transform:translateX(-50%);
-    width:46%;height:46%;
-    background:radial-gradient(circle at 50% 35%, #23252b 0%, #0c0d10 75%);
-    border-radius:50% 50% 45% 45%;
-    box-shadow:0 0 25px rgba(255,150,70,0.12);
-    animation:headTilt 5.5s ease-in-out infinite;
-  }
-  @keyframes headTilt{
-    0%,100%{transform:translateX(-50%) rotate(0deg);}
-    30%{transform:translateX(-50%) rotate(-2.5deg);}
-    65%{transform:translateX(-50%) rotate(2deg);}
-  }
-  .hood::after{
-    content:"";
-    position:absolute;top:38%;left:50%;
-    transform:translateX(-50%);
-    width:55%;height:30%;
-    background:radial-gradient(ellipse at 50% 30%, rgba(255,170,100,0.35), transparent 70%);
-    border-radius:50%;
-    filter:blur(1px);
-  }
-
-  .arm{
-    position:absolute;bottom:38%;
-    width:10%;height:26%;
-    background:linear-gradient(180deg,#1c1e24,#0c0d10);
-    border-radius:20px;
-    transform-origin:top center;
-  }
-  .arm.left{left:20%;animation:typeLeft 0.5s ease-in-out infinite alternate;}
-  .arm.right{right:20%;animation:typeRight 0.46s ease-in-out infinite alternate;}
-  @keyframes typeLeft{0%{transform:rotate(-6deg);}100%{transform:rotate(2deg);}}
-  @keyframes typeRight{0%{transform:rotate(6deg);}100%{transform:rotate(-2deg);}}
-
-  .hand{
-    position:absolute;bottom:-6px;
-    width:100%;height:14px;
-    background:#d9a86b;
-    border-radius:50%;
-    opacity:0.85;
-  }
-
-  /* vignette */
-  .vignette{
-    position:absolute;inset:0;
-    background:radial-gradient(ellipse at 50% 45%, transparent 45%, rgba(0,0,0,0.65) 100%);
-    pointer-events:none;
-  }
+  .bracket { stroke: url(#goldText); stroke-width: 2; fill: none; opacity: 0.8; }
 </style>
-</head>
-<body>
 
-<div class="stage" id="stage">
-  <div class="grid"></div>
-  <div class="particles" id="particles"></div>
-  <div class="smoke"></div>
+<rect width="900" height="560" fill="url(#bgGrad)"/>
+<rect x="0" y="280.0" width="900" height="280.0" fill="url(#floorGlow)"/>
 
-  <div class="scene">
-    <div class="rays"></div>
-    <div class="glow-bounce"></div>
+<!-- corner brackets, echoing the golden banner's corner accents -->
+<path class="bracket" d="M18,18 L18,42 M18,18 L42,18"/>
+<path class="bracket" d="M882,18 L882,42 M882,18 L858,18"/>
+<path class="bracket" d="M18,542 L18,518 M18,542 L42,542"/>
+<path class="bracket" d="M882,542 L882,518 M882,542 L858,542"/>
 
-    <div class="monitors">
-      <div class="monitor mon-left">
-        <div class="screen-label">solution.cpp</div>
-        <div class="editor" id="editorText"></div>
-      </div>
-      <div class="monitor mon-center">
-        <div class="screen-label">bash — zsh</div>
-        <div class="terminal" id="terminalText"></div>
-      </div>
-      <div class="monitor mon-right">
-        <div class="screen-label">Codeforces Dashboard</div>
-        <div class="dash">
-          <h4>Rating Overview</h4>
-          <div class="stat-row">
-            <div class="stat"><div class="num" id="ratingNum">2634</div><div class="lab">RATING</div></div>
-            <div class="stat"><div class="num">1247</div><div class="lab">SOLVED</div></div>
-            <div class="stat"><div class="num">86</div><div class="lab">CONTESTS</div></div>
-          </div>
-          <h4>Recent Contest Graph</h4>
-          <div class="chart-wrap">
-            <svg viewBox="0 0 220 90" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="fillGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#ff8a3d" stop-opacity="0.7"/>
-                  <stop offset="100%" stop-color="#ff8a3d" stop-opacity="0"/>
-                </linearGradient>
-              </defs>
-              <polygon class="chart-fill" points="0,80 20,68 40,72 60,50 80,58 100,34 120,44 140,22 160,30 180,14 200,20 220,10 220,90 0,90"/>
-              <polyline class="chart-line" points="0,80 20,68 40,72 60,50 80,58 100,34 120,44 140,22 160,30 180,14 200,20 220,10"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
+<g class="scenegrp">
 
-    <div class="desk">
-      <div class="desk-item keyboard" id="keyboard"></div>
-      <div class="desk-item mouse"></div>
-      <div class="desk-item mug"></div>
-      <div class="desk-item headphones"></div>
-      <div class="desk-item phone"></div>
-      <div class="desk-item notebook"></div>
-    </div>
+  <circle class="particle" cx="305.5" cy="367.5" r="2.1" style="animation-duration:6.4s;animation-delay:-4.3s"/>
+<circle class="particle" cx="339.9" cy="348.1" r="1.9" style="animation-duration:6.2s;animation-delay:-3.5s"/>
+<circle class="particle" cx="97.3" cy="355.0" r="1.8" style="animation-duration:10.1s;animation-delay:-1.0s"/>
+<circle class="particle" cx="223.1" cy="467.1" r="2.5" style="animation-duration:8.9s;animation-delay:-3.2s"/>
+<circle class="particle" cx="840.5" cy="345.7" r="2.4" style="animation-duration:7.4s;animation-delay:-1.2s"/>
+<circle class="particle" cx="136.6" cy="400.5" r="2.3" style="animation-duration:6.9s;animation-delay:-4.7s"/>
+<circle class="particle" cx="563.9" cy="413.8" r="2.0" style="animation-duration:6.3s;animation-delay:-0.5s"/>
+<circle class="particle" cx="208.9" cy="478.2" r="1.8" style="animation-duration:7.6s;animation-delay:-4.7s"/>
+<circle class="particle" cx="411.6" cy="398.7" r="2.3" style="animation-duration:9.5s;animation-delay:-2.0s"/>
+<circle class="particle" cx="511.0" cy="445.8" r="2.4" style="animation-duration:9.6s;animation-delay:-2.3s"/>
+<circle class="particle" cx="843.7" cy="360.7" r="1.8" style="animation-duration:9.8s;animation-delay:-1.2s"/>
+<circle class="particle" cx="440.9" cy="344.2" r="2.1" style="animation-duration:9.8s;animation-delay:-4.6s"/>
+<circle class="particle" cx="757.9" cy="401.6" r="2.2" style="animation-duration:9.0s;animation-delay:-4.6s"/>
+<circle class="particle" cx="414.1" cy="511.6" r="2.5" style="animation-duration:8.4s;animation-delay:-5.3s"/>
+<circle class="particle" cx="89.7" cy="482.6" r="2.1" style="animation-duration:11.0s;animation-delay:-6.6s"/>
+<circle class="particle" cx="273.4" cy="416.6" r="2.1" style="animation-duration:6.1s;animation-delay:-3.7s"/>
+<circle class="particle" cx="177.8" cy="360.5" r="1.3" style="animation-duration:9.8s;animation-delay:-1.0s"/>
+<circle class="particle" cx="243.0" cy="417.7" r="2.4" style="animation-duration:6.4s;animation-delay:-3.6s"/>
+<circle class="particle" cx="490.5" cy="520.6" r="2.3" style="animation-duration:10.3s;animation-delay:-2.2s"/>
+<circle class="particle" cx="380.5" cy="411.0" r="2.4" style="animation-duration:10.8s;animation-delay:-1.2s"/>
+<circle class="particle" cx="184.5" cy="384.5" r="1.5" style="animation-duration:8.4s;animation-delay:-4.7s"/>
+<circle class="particle" cx="255.5" cy="336.9" r="1.8" style="animation-duration:7.8s;animation-delay:-4.5s"/>
+<circle class="particle" cx="821.5" cy="480.3" r="1.9" style="animation-duration:9.1s;animation-delay:-5.4s"/>
+<circle class="particle" cx="84.3" cy="524.0" r="2.3" style="animation-duration:10.4s;animation-delay:-6.4s"/>
+<circle class="particle" cx="361.8" cy="419.4" r="1.3" style="animation-duration:9.2s;animation-delay:-0.5s"/>
+<circle class="particle" cx="95.2" cy="379.6" r="1.4" style="animation-duration:7.7s;animation-delay:-0.4s"/>
+<circle class="particle" cx="40.2" cy="367.6" r="1.3" style="animation-duration:7.8s;animation-delay:-0.2s"/>
+<circle class="particle" cx="757.0" cy="464.3" r="1.4" style="animation-duration:7.3s;animation-delay:-2.8s"/>
 
-    <div class="figure">
-      <div class="arm left"><div class="hand"></div></div>
-      <div class="arm right"><div class="hand"></div></div>
-      <div class="torso"></div>
-      <div class="hood"></div>
-    </div>
-  </div>
+  <ellipse class="glowpulse" cx="450" cy="205" rx="360" ry="80" fill="#ffb347" opacity="0.16" filter="url(#softGlow)"/>
 
-  <div class="vignette"></div>
-</div>
+  <!-- ===== MONITORS (all same height, screens clipped so nothing overflows) ===== -->
+  <!-- Left: personalized code -->
+  <g transform="translate(48,40)">
+    <rect class="monitor-frame active" x="0" y="0" width="270" height="222" rx="8"/>
+    <text class="screen-label" x="12" y="18">profile.cpp</text>
+    <circle class="dot-live" cx="252" cy="14" r="3"/>
+    <g clip-path="url(#clipLeft)" transform="translate(0,26)">
+      <g class="codeline" style="animation-delay:-0.0s">
+  <text x="16" y="20.0" class="code-txt">class Developer {</text>
+  <rect class="code-mask" x="13" y="10.5" width="230" height="12"/>
+</g>
+<g class="codeline" style="animation-delay:-0.45s">
+  <text x="16" y="32.4" class="code-txt">public:</text>
+  <rect class="code-mask" x="13" y="22.9" width="230" height="12"/>
+</g>
+<g class="codeline" style="animation-delay:-0.9s">
+  <text x="16" y="44.8" class="code-txt">  string name = "Sudharsun V";</text>
+  <rect class="code-mask" x="13" y="35.3" width="230" height="12"/>
+</g>
+<g class="codeline" style="animation-delay:-1.35s">
+  <text x="16" y="57.2" class="code-txt">  string role = "C++ Developer";</text>
+  <rect class="code-mask" x="13" y="47.7" width="230" height="12"/>
+</g>
+<g class="codeline" style="animation-delay:-1.8s">
+  <text x="16" y="69.6" class="code-txt">  string focus = "DSA &amp; CP";</text>
+  <rect class="code-mask" x="13" y="60.099999999999994" width="230" height="12"/>
+</g>
+<g class="codeline" style="animation-delay:-2.25s">
+  <text x="16" y="82.0" class="code-txt"></text>
+  <rect class="code-mask" x="13" y="72.5" width="230" height="12"/>
+</g>
+<g class="codeline" style="animation-delay:-2.7s">
+  <text x="16" y="94.4" class="code-txt">  vector&lt;string&gt; skills = {</text>
+  <rect class="code-mask" x="13" y="84.9" width="230" height="12"/>
+</g>
+<g class="codeline" style="animation-delay:-3.15s">
+  <text x="16" y="106.8" class="code-txt">    "C++", "Python", "React",</text>
+  <rect class="code-mask" x="13" y="97.3" width="230" height="12"/>
+</g>
+<g class="codeline" style="animation-delay:-3.6s">
+  <text x="16" y="119.2" class="code-txt">    "JavaScript", "Java"</text>
+  <rect class="code-mask" x="13" y="109.7" width="230" height="12"/>
+</g>
+<g class="codeline" style="animation-delay:-4.05s">
+  <text x="16" y="131.60000000000002" class="code-txt">  };</text>
+  <rect class="code-mask" x="13" y="122.10000000000002" width="230" height="12"/>
+</g>
+<g class="codeline" style="animation-delay:-4.5s">
+  <text x="16" y="144.0" class="code-txt"></text>
+  <rect class="code-mask" x="13" y="134.5" width="230" height="12"/>
+</g>
+<g class="codeline" style="animation-delay:-4.95s">
+  <text x="16" y="156.4" class="code-txt">  int cf_rating = 1000;</text>
+  <rect class="code-mask" x="13" y="146.9" width="230" height="12"/>
+</g>
+<g class="codeline" style="animation-delay:-5.4s">
+  <text x="16" y="168.8" class="code-txt">  bool active = true;</text>
+  <rect class="code-mask" x="13" y="159.3" width="230" height="12"/>
+</g>
+<g class="codeline" style="animation-delay:-5.85s">
+  <text x="16" y="181.20000000000002" class="code-txt"></text>
+  <rect class="code-mask" x="13" y="171.70000000000002" width="230" height="12"/>
+</g>
 
-<script>
-  // ---------- Particles ----------
-  const particlesEl = document.getElementById('particles');
-  const particleCount = 40;
-  for(let i=0;i<particleCount;i++){
-    const p = document.createElement('div');
-    p.className = 'p';
-    const size = 1 + Math.random()*3;
-    p.style.width = size+'px';
-    p.style.height = size+'px';
-    p.style.left = Math.random()*100+'%';
-    p.style.bottom = (Math.random()*10)+'%';
-    p.style.animationDuration = (6+Math.random()*8)+'s';
-    p.style.animationDelay = (Math.random()*8)+'s';
-    particlesEl.appendChild(p);
-  }
+<g class="codeline" style="animation-delay:-7.65s">
+  <text x="16" y="230.8" class="code-txt">  }</text>
+  <rect class="code-mask" x="13" y="221.3" width="230" height="12"/>
+</g>
+<g class="codeline" style="animation-delay:-8.1s">
+  <text x="16" y="243.20000000000002" class="code-txt">};</text>
+  <rect class="code-mask" x="13" y="233.70000000000002" width="230" height="12"/>
+</g>
+    </g>
+  </g>
 
-  // ---------- Keyboard key lighting (random flowing keys) ----------
-  const kb = document.getElementById('keyboard');
-  const totalKeys = 16*4;
-  for(let i=0;i<totalKeys;i++){
-    const k = document.createElement('div');
-    k.className = 'kb-key';
-    k.style.animationDelay = (Math.random()*2.6)+'s';
-    if(Math.random() < 0.85) k.classList.add('lit');
-    kb.appendChild(k);
-  }
+  <!-- Center: status / cf profile panel -->
+  <g transform="translate(330,40)">
+    <rect class="monitor-frame active" x="0" y="0" width="270" height="222" rx="8"/>
+    <text class="screen-label" x="12" y="18">status</text>
+    <circle class="dot-live" cx="252" cy="14" r="3"/>
+    <g clip-path="url(#clipCenter)" transform="translate(0,26)">
+      <text class="term-dim term-line" x="16" y="20.0" style="animation-delay:-0.0s">Submitting solution...</text>
+<text class="term-ok term-line" x="16" y="35.5" style="animation-delay:-0.5s">Verdict: Accepted</text>
+<text class="term-prompt term-line" x="16" y="66.5" style="animation-delay:-1.5s">$ cf profile</text>
+<text class="term-dim term-line" x="16" y="82.0" style="animation-delay:-2.0s">Handle: sudharsun.codes</text>
+<text class="term-prompt term-line" x="16" y="113.0" style="animation-delay:-3.0s">$ cf rating</text>
+<text class="term-dim term-line" x="16" y="128.5" style="animation-delay:-3.5s">Rating: 1000 (Newbie)</text>
+<text class="term-prompt term-line" x="16" y="159.5" style="animation-delay:-4.5s">$ status</text>
+<text class="term-ok term-line" x="16" y="175.0" style="animation-delay:-5.0s">Streak: active</text>
+    </g>
+  </g>
 
-  // ---------- Editor typing simulation ----------
-  const codeLines = [
-`<span class="com">// Codeforces Div.1 F — segment tree optimization</span>`,
-`<span class="kw">#include</span> <span class="str">&lt;bits/stdc++.h&gt;</span>`,
-`<span class="kw">using namespace</span> std;`,
-``,
-`<span class="type">struct</span> <span class="fn">SegTree</span> {`,
-`    vector&lt;<span class="type">long long</span>&gt; tree, lazy;`,
-`    <span class="type">int</span> n;`,
-``,
-`    <span class="fn">void</span> <span class="fn">build</span>(<span class="type">int</span> node, <span class="type">int</span> l, <span class="type">int</span> r) {`,
-`        <span class="kw">if</span> (l == r) { tree[node] = a[l]; <span class="kw">return</span>; }`,
-`        <span class="type">int</span> mid = (l + r) &gt;&gt; 1;`,
-`        build(node*2, l, mid);`,
-`        build(node*2+1, mid+1, r);`,
-`        tree[node] = tree[node*2] + tree[node*2+1];`,
-`    }`,
-``,
-`    <span class="fn">void</span> <span class="fn">update</span>(<span class="type">int</span> node, <span class="type">int</span> l, <span class="type">int</span> r, <span class="type">int</span> ql, <span class="type">int</span> qr, <span class="type">long long</span> val) {`,
-`        <span class="kw">if</span> (qr &lt; l || r &lt; ql) <span class="kw">return</span>;`,
-`        <span class="kw">if</span> (ql &lt;= l &amp;&amp; r &lt;= qr) { tree[node] += val; <span class="kw">return</span>; }`,
-`        propagate(node, l, r);`,
-`        <span class="type">int</span> mid = (l + r) &gt;&gt; 1;`,
-`        update(node*2, l, mid, ql, qr, val);`,
-`        update(node*2+1, mid+1, r, ql, qr, val);`,
-`    }`,
-`};`,
-``,
-`<span class="type">int</span> <span class="fn">main</span>() {`,
-`    ios::sync_with_stdio(<span class="kw">false</span>);`,
-`    cin.tie(<span class="kw">nullptr</span>);`,
-`    <span class="type">int</span> n, q; cin &gt;&gt; n &gt;&gt; q;`,
-`    SegTree st(n);`,
-`    <span class="kw">while</span> (q--) { <span class="com">// process queries</span>`,
-`        st.update(1, 0, n-1, l, r, val);`,
-`    }`,
-`    <span class="kw">return</span> 0;`,
-`}`
-  ];
+  <!-- Right: dashboard -->
+  <g transform="translate(612,40)">
+    <rect class="monitor-frame active" x="0" y="0" width="250" height="222" rx="8"/>
+    <text class="screen-label" x="12" y="18">codeforces</text>
+    <circle class="dot-live" cx="232" cy="14" r="3"/>
 
-  const editorEl = document.getElementById('editorText');
-  let lineIdx = 0, charIdx = 0, renderedHTML = "";
+    <text class="dash-h" x="14" y="42">Rating Overview</text>
+    <g transform="translate(14,50)">
+      <rect x="0" y="0" width="66" height="32" rx="5" fill="#ffb347" opacity="0.09" stroke="#ffb347" stroke-opacity="0.3"/>
+      <text class="stat-num" x="33" y="17" text-anchor="middle">1000</text>
+      <text class="stat-lab" x="33" y="27" text-anchor="middle">RATING</text>
 
-  function typeEditor(){
-    if(lineIdx >= codeLines.length){
-      setTimeout(()=>{ renderedHTML=""; lineIdx=0; charIdx=0; editorEl.innerHTML=""; typeEditor(); }, 1800);
-      return;
-    }
-    const fullLine = codeLines[lineIdx];
-    // strip tags length-aware typing: reveal by rendering full line progressively using a temp div text length
-    const plain = fullLine.replace(/<[^>]*>/g,'');
-    if(charIdx <= plain.length){
-      // Build partial: naive approach — reveal whole line quickly after certain chars for perf, but simulate char by char using textContent overlay
-      let partial = "";
-      let count = 0;
-      let inTag = false;
-      for(let ch of fullLine){
-        if(ch === '<') inTag = true;
-        if(!inTag) count++;
-        partial += ch;
-        if(ch === '>') inTag = false;
-        if(!inTag && count >= charIdx) break;
-      }
-      editorEl.innerHTML = renderedHTML + partial + '<span class="cursor-blink"></span>';
-      charIdx++;
-      setTimeout(typeEditor, 14 + Math.random()*22);
-    } else {
-      renderedHTML += fullLine + "\n";
-      lineIdx++;
-      charIdx = 0;
-      // auto-scroll effect: keep last ~16 lines
-      const linesArr = renderedHTML.split("\n");
-      if(linesArr.length > 15){
-        renderedHTML = linesArr.slice(linesArr.length-15).join("\n");
-      }
-      setTimeout(typeEditor, 40);
-    }
-  }
-  typeEditor();
+      <rect x="74" y="0" width="66" height="32" rx="5" fill="#ffb347" opacity="0.09" stroke="#ffb347" stroke-opacity="0.3"/>
+      <text class="stat-num" x="107" y="17" text-anchor="middle">350+</text>
+      <text class="stat-lab" x="107" y="27" text-anchor="middle">LEETCODE</text>
 
-  // ---------- Terminal simulation ----------
-  const terminalEl = document.getElementById('terminalText');
-  const termSequence = [
-    {t:'<span class="prompt">$</span> g++ solution.cpp -O2 -o sol', d:900},
-    {t:'<span class="dim">Compiling...</span>', d:1100},
-    {t:'<span class="dim">Compiling</span><span class="dim">.</span><span class="dim">.</span><span class="dim">.</span> <span class="ok">done</span>', d:700},
-    {t:'<span class="prompt">$</span> ./run_tests.sh', d:900},
-    {t:'<span class="dim">Running Tests...</span>', d:1200},
-    {t:'Test 1: <span class="ok">Accepted</span> ✓  (12ms)', d:500},
-    {t:'Test 2: <span class="ok">Accepted</span> ✓  (18ms)', d:500},
-    {t:'Test 3: <span class="ok">Accepted</span> ✓  (9ms)', d:500},
-    {t:'Test 4: <span class="ok">Accepted</span> ✓  (21ms)', d:700},
-    {t:'<span class="ok">All tests passed — Accepted ✓</span>', d:2200},
-  ];
+      <rect x="148" y="0" width="66" height="32" rx="5" fill="#ffb347" opacity="0.09" stroke="#ffb347" stroke-opacity="0.3"/>
+      <text class="stat-num" x="181" y="17" text-anchor="middle">2x</text>
+      <text class="stat-lab" x="181" y="27" text-anchor="middle">HACKATHON</text>
+    </g>
 
-  async function runTerminal(){
-    terminalEl.innerHTML = "";
-    let buffer = [];
-    for(const step of termSequence){
-      buffer.push(step.t);
-      if(buffer.length > 9) buffer.shift();
-      terminalEl.innerHTML = buffer.join("<br>") + '<span class="cursor-blink"></span>';
-      await new Promise(r=>setTimeout(r, step.d));
-    }
-    await new Promise(r=>setTimeout(r, 900));
-    runTerminal();
-  }
-  runTerminal();
+    <text class="dash-h" x="14" y="106">Recent Contest Graph</text>
+    <g transform="translate(14,114)">
+      <polygon class="chart-area" points="0,80 22,70 44,73 66,52 88,58 110,36 132,46 154,22 176,30 198,12 210,80"/>
+      <polyline class="chart-line" points="0,80 22,70 44,73 66,52 88,58 110,36 132,46 154,22 176,30 198,12"/>
+    </g>
+  </g>
 
-  // ---------- Rating counter subtle flicker ----------
-  const ratingEl = document.getElementById('ratingNum');
-  const baseRating = 2634;
-  setInterval(()=>{
-    const delta = Math.floor(Math.random()*5)-2;
-    ratingEl.textContent = baseRating + delta;
-  }, 2600);
-</script>
+  <!-- ===== monitor stands bridging screens to desk (no gap) ===== -->
+  <rect x="172" y="262" width="10" height="36" fill="#20150a"/>
+  <rect x="454" y="262" width="10" height="36" fill="#20150a"/>
+  <rect x="732" y="262" width="10" height="36" fill="#20150a"/>
 
-</body>
-</html>
+  <!-- ===== DESK ===== -->
+  <g transform="translate(48,298)">
+    <rect width="804" height="140" rx="8" fill="url(#deskGrad)"/>
+
+    <rect class="kbkey lit" x="358.0" y="466.0" width="12.5" height="11" rx="2" style="animation-delay:-0.87s"/>
+<rect class="kbkey" x="372.3" y="466.0" width="12.5" height="11" rx="2" style="animation-delay:-2.04s"/>
+<rect class="kbkey lit" x="386.6" y="466.0" width="12.5" height="11" rx="2" style="animation-delay:-1.12s"/>
+<rect class="kbkey lit" x="400.9" y="466.0" width="12.5" height="11" rx="2" style="animation-delay:-0.21s"/>
+<rect class="kbkey lit" x="415.2" y="466.0" width="12.5" height="11" rx="2" style="animation-delay:-0.82s"/>
+<rect class="kbkey lit" x="429.5" y="466.0" width="12.5" height="11" rx="2" style="animation-delay:-1.99s"/>
+<rect class="kbkey" x="443.8" y="466.0" width="12.5" height="11" rx="2" style="animation-delay:-0.06s"/>
+<rect class="kbkey lit" x="458.1" y="466.0" width="12.5" height="11" rx="2" style="animation-delay:-1.27s"/>
+<rect class="kbkey lit" x="472.4" y="466.0" width="12.5" height="11" rx="2" style="animation-delay:-1.3s"/>
+<rect class="kbkey" x="486.7" y="466.0" width="12.5" height="11" rx="2" style="animation-delay:-1.27s"/>
+<rect class="kbkey lit" x="501.0" y="466.0" width="12.5" height="11" rx="2" style="animation-delay:-2.07s"/>
+<rect class="kbkey lit" x="515.3" y="466.0" width="12.5" height="11" rx="2" style="animation-delay:-0.63s"/>
+<rect class="kbkey lit" x="529.6" y="466.0" width="12.5" height="11" rx="2" style="animation-delay:-0.4s"/>
+<rect class="kbkey lit" x="543.9" y="466.0" width="12.5" height="11" rx="2" style="animation-delay:-1.28s"/>
+<rect class="kbkey lit" x="558.2" y="466.0" width="12.5" height="11" rx="2" style="animation-delay:-0.79s"/>
+<rect class="kbkey" x="358.0" y="478.8" width="12.5" height="11" rx="2" style="animation-delay:-1.95s"/>
+<rect class="kbkey" x="372.3" y="478.8" width="12.5" height="11" rx="2" style="animation-delay:-2.05s"/>
+<rect class="kbkey lit" x="386.6" y="478.8" width="12.5" height="11" rx="2" style="animation-delay:-1.96s"/>
+<rect class="kbkey lit" x="400.9" y="478.8" width="12.5" height="11" rx="2" style="animation-delay:-0.54s"/>
+<rect class="kbkey lit" x="415.2" y="478.8" width="12.5" height="11" rx="2" style="animation-delay:-0.85s"/>
+<rect class="kbkey lit" x="429.5" y="478.8" width="12.5" height="11" rx="2" style="animation-delay:-0.07s"/>
+<rect class="kbkey lit" x="443.8" y="478.8" width="12.5" height="11" rx="2" style="animation-delay:-0.62s"/>
+<rect class="kbkey lit" x="458.1" y="478.8" width="12.5" height="11" rx="2" style="animation-delay:-2.3s"/>
+<rect class="kbkey" x="472.4" y="478.8" width="12.5" height="11" rx="2" style="animation-delay:-2.25s"/>
+<rect class="kbkey lit" x="486.7" y="478.8" width="12.5" height="11" rx="2" style="animation-delay:-2.29s"/>
+<rect class="kbkey lit" x="501.0" y="478.8" width="12.5" height="11" rx="2" style="animation-delay:-0.53s"/>
+<rect class="kbkey lit" x="515.3" y="478.8" width="12.5" height="11" rx="2" style="animation-delay:-0.47s"/>
+<rect class="kbkey" x="529.6" y="478.8" width="12.5" height="11" rx="2" style="animation-delay:-1.5s"/>
+<rect class="kbkey lit" x="543.9" y="478.8" width="12.5" height="11" rx="2" style="animation-delay:-2.02s"/>
+<rect class="kbkey" x="558.2" y="478.8" width="12.5" height="11" rx="2" style="animation-delay:-1.57s"/>
+<rect class="kbkey lit" x="358.0" y="491.6" width="12.5" height="11" rx="2" style="animation-delay:-0.2s"/>
+<rect class="kbkey" x="372.3" y="491.6" width="12.5" height="11" rx="2" style="animation-delay:-2.18s"/>
+<rect class="kbkey lit" x="386.6" y="491.6" width="12.5" height="11" rx="2" style="animation-delay:-1.8s"/>
+<rect class="kbkey" x="400.9" y="491.6" width="12.5" height="11" rx="2" style="animation-delay:-0.43s"/>
+<rect class="kbkey" x="415.2" y="491.6" width="12.5" height="11" rx="2" style="animation-delay:-0.8s"/>
+<rect class="kbkey lit" x="429.5" y="491.6" width="12.5" height="11" rx="2" style="animation-delay:-2.33s"/>
+<rect class="kbkey" x="443.8" y="491.6" width="12.5" height="11" rx="2" style="animation-delay:-0.96s"/>
+<rect class="kbkey lit" x="458.1" y="491.6" width="12.5" height="11" rx="2" style="animation-delay:-1.74s"/>
+<rect class="kbkey lit" x="472.4" y="491.6" width="12.5" height="11" rx="2" style="animation-delay:-0.3s"/>
+<rect class="kbkey" x="486.7" y="491.6" width="12.5" height="11" rx="2" style="animation-delay:-2.17s"/>
+<rect class="kbkey" x="501.0" y="491.6" width="12.5" height="11" rx="2" style="animation-delay:-0.35s"/>
+<rect class="kbkey lit" x="515.3" y="491.6" width="12.5" height="11" rx="2" style="animation-delay:-2.35s"/>
+<rect class="kbkey lit" x="529.6" y="491.6" width="12.5" height="11" rx="2" style="animation-delay:-0.84s"/>
+<rect class="kbkey lit" x="543.9" y="491.6" width="12.5" height="11" rx="2" style="animation-delay:-0.31s"/>
+<rect class="kbkey lit" x="558.2" y="491.6" width="12.5" height="11" rx="2" style="animation-delay:-2.33s"/>
+
+    <rect class="mousepulse" x="560" y="60" width="18" height="32" rx="8" fill="#12100a" stroke="#3a2c18"/>
+
+    <g transform="translate(58,42)">
+      <rect width="24" height="28" rx="4" fill="#22190d" stroke="#3a2c18"/>
+      <ellipse class="steam" cx="12" cy="-6" rx="7" ry="4" fill="#ffe9b8" opacity="0.2"/>
+    </g>
+
+    <g transform="translate(700,30)">
+      <path d="M0,20 A28,28 0 0,1 56,20" fill="none" stroke="#3a2c18" stroke-width="3"/>
+      <rect x="-4" y="16" width="8" height="15" rx="3" fill="#231a0e"/>
+      <rect x="52" y="16" width="8" height="15" rx="3" fill="#231a0e"/>
+    </g>
+
+    <rect x="640" y="44" width="15" height="28" rx="3" fill="#12100a" stroke="#2c220f"/>
+    <rect x="642" y="47" width="11" height="8" fill="#ffb347" opacity="0.3"/>
+
+    <rect x="240" y="66" width="56" height="13" rx="2" fill="#1e1608" stroke="#3a2c18"/>
+  </g>
+
+  <!-- ===== FIGURE ===== -->
+  <g class="figure">
+    <g class="arm-l"><rect x="390" y="418" width="24" height="66" rx="12" fill="#171309"/></g>
+    <g class="arm-r"><rect x="486" y="418" width="24" height="66" rx="12" fill="#171309"/></g>
+    <path d="M348,530 C348,448 376,410 450,410 C524,410 552,448 552,530 L552,560 L348,560 Z" fill="#100b06"/>
+    <g class="hood">
+      <ellipse cx="450" cy="372" rx="66" ry="60" fill="#100b06"/>
+      <ellipse cx="450" cy="382" rx="42" ry="24" fill="#ffb347" opacity="0.16" filter="url(#softGlow)"/>
+    </g>
+  </g>
+
+</g>
+
+<rect width="900" height="560" fill="url(#floorGlow)" opacity="0.12"/>
+</svg>
