@@ -2,72 +2,652 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cyber Coder</title>
+<title>Cyberpunk Competitive Programmer — Hero Scene</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#0b0b0b;overflow:hidden;font-family:Consolas,monospace}
-.scene{position:relative;width:100vw;height:100vh;background:radial-gradient(circle,#2b1800 0,#090909 70%)}
-.grid{position:absolute;inset:0;background:
-linear-gradient(rgba(255,170,0,.08) 1px,transparent 1px),
-linear-gradient(90deg,rgba(255,170,0,.08) 1px,transparent 1px);
-background-size:40px 40px;animation:grid 8s linear infinite}
-@keyframes grid{to{transform:translateY(40px)}}
-.monitor{position:absolute;width:220px;height:140px;background:#111;border:2px solid #ffb000;border-radius:10px;box-shadow:0 0 25px rgba(255,176,0,.5)}
-.left{left:18%;top:22%}.center{left:40%;top:18%}.right{left:62%;top:22%}
-.screen{padding:10px;color:#6dff6d;white-space:pre-wrap}
-.desk{position:absolute;left:18%;bottom:120px;width:64%;height:18px;background:#3b2a17}
-.person{position:absolute;left:48%;bottom:138px;width:90px;height:170px}
-.head{width:34px;height:34px;border-radius:50%;background:#222;margin:0 auto}
-.body{width:56px;height:95px;background:#191919;border-radius:18px;margin:0 auto}
-.arm{position:absolute;width:14px;height:68px;background:#222;top:42px;border-radius:10px}
-.l{left:6px;transform-origin:top;animation:type .3s infinite alternate}
-.r{right:6px;transform-origin:top;animation:type .3s infinite alternate-reverse}
-@keyframes type{from{transform:rotate(18deg)}to{transform:rotate(35deg)}}
-kbd{display:block;position:absolute;left:44%;bottom:105px;width:180px;height:18px;border-radius:5px;background:linear-gradient(90deg,#ff6a00,#ffd000,#ff6a00);background-size:300% 100%;animation:rgb 3s linear infinite}
-@keyframes rgb{to{background-position:300% 0}}
-.cursor{animation:blink 1s steps(1) infinite}@keyframes blink{50%{opacity:0}}
+  :root{
+    --black:#07090c;
+    --dgray:#12151b;
+    --orange:#ff8a3d;
+    --gold:#ffc766;
+    --amber:#ffb347;
+    --glow:#ff9a4d;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;width:100%;height:100%;
+    background:var(--black);
+    overflow:hidden;
+    font-family:'Segoe UI',system-ui,sans-serif;
+  }
+  .stage{
+    position:relative;
+    width:100vw;height:100vh;
+    min-height:560px;
+    background:
+      radial-gradient(ellipse at 50% 105%, rgba(255,140,60,0.16), transparent 60%),
+      radial-gradient(ellipse at 20% -10%, rgba(255,200,120,0.08), transparent 55%),
+      linear-gradient(180deg,#05060a 0%, #0a0d12 55%, #050608 100%);
+    perspective:1400px;
+    display:flex;align-items:center;justify-content:center;
+    animation:pushIn 12s ease-in-out infinite alternate;
+  }
+  @keyframes pushIn{
+    0%{transform:scale(1);}
+    100%{transform:scale(1.045);}
+  }
+
+  /* ---------- FLOOR GRID ---------- */
+  .grid{
+    position:absolute;
+    left:50%;bottom:-10%;
+    width:220%;height:60%;
+    transform:translateX(-50%) rotateX(72deg);
+    background-image:
+      linear-gradient(rgba(255,150,70,0.35) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,150,70,0.35) 1px, transparent 1px);
+    background-size:60px 60px;
+    -webkit-mask-image:radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%);
+    mask-image:radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%);
+    opacity:0.35;
+    animation:gridMove 6s linear infinite;
+  }
+  @keyframes gridMove{
+    from{background-position:0 0,0 0;}
+    to{background-position:0 60px,60px 0;}
+  }
+
+  /* ---------- PARTICLES ---------- */
+  .particles{position:absolute;inset:0;pointer-events:none;}
+  .p{
+    position:absolute;
+    border-radius:50%;
+    background:radial-gradient(circle, var(--gold) 0%, rgba(255,180,90,0) 70%);
+    opacity:0.7;
+    animation:floatUp linear infinite;
+  }
+  @keyframes floatUp{
+    0%{transform:translateY(0) translateX(0);opacity:0;}
+    10%{opacity:0.8;}
+    90%{opacity:0.4;}
+    100%{transform:translateY(-420px) translateX(20px);opacity:0;}
+  }
+
+  .smoke{
+    position:absolute;bottom:0;left:0;width:100%;height:45%;
+    background:linear-gradient(180deg, transparent, rgba(255,140,70,0.05));
+    filter:blur(6px);
+    animation:smokeDrift 10s ease-in-out infinite alternate;
+  }
+  @keyframes smokeDrift{
+    0%{transform:translateX(-2%);}
+    100%{transform:translateX(2%);}
+  }
+
+  /* ---------- SCENE (desk + monitors + figure) ---------- */
+  .scene{
+    position:relative;
+    width:min(1400px,96vw);
+    height:min(760px,90vh);
+    transform:rotateY(-8deg) rotateX(2deg);
+    transform-style:preserve-3d;
+  }
+
+  .rays{
+    position:absolute;
+    top:-10%;left:10%;
+    width:80%;height:70%;
+    background:conic-gradient(from 200deg at 50% 0%, rgba(255,170,90,0.10), transparent 18%, transparent 82%, rgba(255,170,90,0.10));
+    filter:blur(2px);
+    opacity:0.6;
+    pointer-events:none;
+    animation:rayPulse 5s ease-in-out infinite alternate;
+  }
+  @keyframes rayPulse{0%{opacity:0.35;}100%{opacity:0.65;}}
+
+  /* Monitors row */
+  .monitors{
+    position:absolute;
+    top:6%;left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:18px;
+    width:92%;
+    justify-content:center;
+    filter:drop-shadow(0 30px 60px rgba(0,0,0,0.65));
+  }
+  .monitor{
+    position:relative;
+    background:#0b0d10;
+    border:2px solid #23262c;
+    border-radius:10px;
+    box-shadow:
+      0 0 40px rgba(255,140,60,0.25),
+      inset 0 0 30px rgba(0,0,0,0.6);
+    overflow:hidden;
+  }
+  .monitor::after{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(255,255,255,0.04), transparent 40%);
+    pointer-events:none;
+  }
+  .mon-left{width:30%;height:230px;transform:rotateY(14deg);}
+  .mon-center{width:36%;height:250px;transform:translateY(-4px);}
+  .mon-right{width:30%;height:230px;transform:rotateY(-14deg);}
+
+  .screen-label{
+    position:absolute;top:6px;left:10px;
+    font-size:9px;letter-spacing:2px;
+    color:var(--gold);opacity:0.55;
+    font-family:'Consolas',monospace;
+    text-transform:uppercase;
+  }
+
+  /* --- Left monitor: code editor --- */
+  .editor{
+    position:absolute;inset:0;
+    padding:22px 10px 8px 10px;
+    font-family:'Consolas','Courier New',monospace;
+    font-size:11px;line-height:1.55;
+    color:#e8c88a;
+    white-space:pre-wrap;
+    overflow:hidden;
+  }
+  .editor .kw{color:#ff9a4d;}
+  .editor .type{color:#ffd27a;}
+  .editor .str{color:#9fe6a0;}
+  .editor .com{color:#6b7280;}
+  .editor .fn{color:#ffcf7a;}
+  .cursor-blink{
+    display:inline-block;width:6px;height:12px;
+    background:var(--gold);
+    animation:blink 0.9s steps(1) infinite;
+    vertical-align:middle;
+  }
+  @keyframes blink{50%{opacity:0;}}
+
+  /* --- Center monitor: terminal --- */
+  .terminal{
+    position:absolute;inset:0;
+    padding:22px 12px 10px 12px;
+    font-family:'Consolas','Courier New',monospace;
+    font-size:12px;line-height:1.7;
+    color:#ffcf9a;
+    background:radial-gradient(ellipse at 50% 0%, rgba(255,140,60,0.06), transparent 70%);
+  }
+  .terminal .prompt{color:var(--gold);}
+  .terminal .ok{color:#8fffb0;font-weight:bold;}
+  .terminal .dim{color:#a3742f;}
+
+  /* --- Right monitor: dashboard --- */
+  .dash{
+    position:absolute;inset:0;
+    padding:20px 12px 10px 12px;
+    font-family:'Segoe UI',sans-serif;
+    color:var(--gold);
+  }
+  .dash h4{
+    margin:0 0 8px 0;font-size:11px;letter-spacing:1px;
+    color:var(--amber);font-weight:600;text-transform:uppercase;
+  }
+  .stat-row{display:flex;gap:8px;margin-bottom:10px;}
+  .stat{
+    flex:1;background:rgba(255,150,70,0.08);
+    border:1px solid rgba(255,150,70,0.25);
+    border-radius:6px;padding:6px 8px;
+    text-align:center;
+  }
+  .stat .num{font-size:15px;font-weight:700;color:#ffdca0;}
+  .stat .lab{font-size:8px;color:#c98a4a;letter-spacing:1px;}
+  .chart-wrap{height:90px;position:relative;}
+  .chart-wrap svg{width:100%;height:100%;}
+  .chart-line{
+    fill:none;stroke:var(--orange);stroke-width:2;
+    stroke-dasharray:400;stroke-dashoffset:400;
+    animation:draw 4s ease forwards infinite;
+    filter:drop-shadow(0 0 4px rgba(255,150,70,0.8));
+  }
+  @keyframes draw{
+    0%{stroke-dashoffset:400;}
+    60%{stroke-dashoffset:0;}
+    100%{stroke-dashoffset:0;}
+  }
+  .chart-fill{
+    fill:url(#fillGrad);
+    opacity:0;
+    animation:fadeFill 4s ease forwards infinite;
+  }
+  @keyframes fadeFill{
+    0%{opacity:0;}
+    60%{opacity:0.35;}
+    100%{opacity:0.35;}
+  }
+
+  /* Screen glow bounce onto desk */
+  .glow-bounce{
+    position:absolute;
+    top:34%;left:50%;
+    transform:translateX(-50%);
+    width:70%;height:40%;
+    background:radial-gradient(ellipse at 50% 0%, rgba(255,150,70,0.28), transparent 70%);
+    filter:blur(10px);
+    pointer-events:none;
+    animation:glowPulse 3.4s ease-in-out infinite;
+  }
+  @keyframes glowPulse{
+    0%,100%{opacity:0.6;}
+    50%{opacity:0.95;}
+  }
+
+  /* ---------- DESK ---------- */
+  .desk{
+    position:absolute;
+    bottom:6%;left:50%;
+    transform:translateX(-50%);
+    width:96%;height:30%;
+    background:linear-gradient(180deg,#3a2416 0%, #241609 60%, #150c05 100%);
+    border-radius:6px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.7), inset 0 4px 10px rgba(255,150,70,0.06);
+  }
+  .desk::before{
+    content:"";
+    position:absolute;top:0;left:0;right:0;height:40%;
+    background:linear-gradient(180deg, rgba(255,170,100,0.18), transparent);
+    border-radius:6px 6px 0 0;
+  }
+
+  .desk-item{position:absolute;}
+
+  /* keyboard */
+  .keyboard{
+    width:22%;height:22px;
+    left:26%;top:18%;
+    border-radius:4px;
+    background:#0c0d10;
+    border:1px solid #2a2c31;
+    display:grid;
+    grid-template-columns:repeat(16,1fr);
+    gap:1.5px;
+    padding:2px;
+    box-shadow:0 6px 14px rgba(0,0,0,0.5);
+  }
+  .kb-key{
+    background:#161820;border-radius:1.5px;
+  }
+  .kb-key.lit{
+    animation:kbFlow 2.6s linear infinite;
+  }
+  @keyframes kbFlow{
+    0%,100%{background:#161820;}
+    50%{background:var(--orange);box-shadow:0 0 5px var(--orange);}
+  }
+
+  /* mouse */
+  .mouse{
+    width:3.4%;height:22px;
+    left:52%;top:18%;
+    border-radius:6px 6px 8px 8px;
+    background:#111318;
+    border:1px solid #2a2c31;
+    box-shadow:0 0 8px 1px var(--orange);
+    animation:mousePulse 2s ease-in-out infinite;
+  }
+  @keyframes mousePulse{
+    0%,100%{box-shadow:0 0 4px 0px rgba(255,150,70,0.4);}
+    50%{box-shadow:0 0 12px 3px rgba(255,150,70,0.9);}
+  }
+
+  /* mug */
+  .mug{
+    width:3%;height:20px;
+    left:14%;top:12%;
+    background:linear-gradient(180deg,#2b2f38,#15171c);
+    border-radius:3px 3px 6px 6px;
+    border:1px solid #3a3d44;
+  }
+  .mug::after{
+    content:"";position:absolute;top:-8px;left:2px;
+    width:60%;height:6px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.15), transparent);
+    border-radius:50%;
+    filter:blur(1px);
+    animation:steam 3s ease-in-out infinite;
+  }
+  @keyframes steam{0%,100%{opacity:0.2;transform:translateY(0);}50%{opacity:0.6;transform:translateY(-4px);}}
+
+  /* headphones */
+  .headphones{
+    width:5%;height:16px;
+    left:82%;top:10%;
+    border:2px solid #3a3d44;
+    border-bottom:none;
+    border-radius:50% 50% 0 0 / 100% 100% 0 0;
+  }
+  .headphones::before,.headphones::after{
+    content:"";position:absolute;bottom:-4px;width:5px;height:8px;
+    background:#26282e;border-radius:2px;
+    box-shadow:0 0 4px rgba(255,150,70,0.3);
+  }
+  .headphones::before{left:-2px;}
+  .headphones::after{right:-2px;}
+
+  /* phone */
+  .phone{
+    width:2.2%;height:16px;
+    left:74%;top:16%;
+    background:#0e0f12;
+    border:1px solid #2c2e33;
+    border-radius:3px;
+    box-shadow:0 0 5px rgba(255,150,70,0.15);
+  }
+  .phone::after{
+    content:"";position:absolute;inset:2px;
+    background:linear-gradient(160deg, rgba(255,150,70,0.25), transparent 60%);
+    border-radius:2px;
+    animation:phoneFlicker 4s ease-in-out infinite;
+  }
+  @keyframes phoneFlicker{0%,100%{opacity:0.3;}50%{opacity:0.7;}}
+
+  /* notebook */
+  .notebook{
+    width:6%;height:10px;
+    left:64%;top:22%;
+    background:#1c1508;
+    border:1px solid #3a2a12;
+    border-radius:2px;
+  }
+  .notebook::before{
+    content:"";position:absolute;left:2px;right:2px;top:3px;height:1px;background:#4a341a;
+  }
+
+  /* ---------- PROGRAMMER SILHOUETTE ---------- */
+  .figure{
+    position:absolute;
+    bottom:2%;left:50%;
+    transform:translateX(-50%);
+    width:34%;
+    height:52%;
+    animation:breathe 4.2s ease-in-out infinite;
+    transform-origin:bottom center;
+  }
+  @keyframes breathe{
+    0%,100%{transform:translateX(-50%) translateY(0) rotate(0deg);}
+    50%{transform:translateX(-50%) translateY(-2px) rotate(0.4deg);}
+  }
+  .torso{
+    position:absolute;bottom:0;left:50%;
+    transform:translateX(-50%);
+    width:78%;height:70%;
+    background:linear-gradient(180deg,#191b20 0%, #0d0e11 100%);
+    border-radius:38% 38% 10% 10%;
+    box-shadow:
+      inset 0 10px 20px rgba(255,140,60,0.10),
+      0 0 40px rgba(0,0,0,0.6);
+  }
+  .hood{
+    position:absolute;
+    bottom:56%;left:50%;
+    transform:translateX(-50%);
+    width:46%;height:46%;
+    background:radial-gradient(circle at 50% 35%, #23252b 0%, #0c0d10 75%);
+    border-radius:50% 50% 45% 45%;
+    box-shadow:0 0 25px rgba(255,150,70,0.12);
+    animation:headTilt 5.5s ease-in-out infinite;
+  }
+  @keyframes headTilt{
+    0%,100%{transform:translateX(-50%) rotate(0deg);}
+    30%{transform:translateX(-50%) rotate(-2.5deg);}
+    65%{transform:translateX(-50%) rotate(2deg);}
+  }
+  .hood::after{
+    content:"";
+    position:absolute;top:38%;left:50%;
+    transform:translateX(-50%);
+    width:55%;height:30%;
+    background:radial-gradient(ellipse at 50% 30%, rgba(255,170,100,0.35), transparent 70%);
+    border-radius:50%;
+    filter:blur(1px);
+  }
+
+  .arm{
+    position:absolute;bottom:38%;
+    width:10%;height:26%;
+    background:linear-gradient(180deg,#1c1e24,#0c0d10);
+    border-radius:20px;
+    transform-origin:top center;
+  }
+  .arm.left{left:20%;animation:typeLeft 0.5s ease-in-out infinite alternate;}
+  .arm.right{right:20%;animation:typeRight 0.46s ease-in-out infinite alternate;}
+  @keyframes typeLeft{0%{transform:rotate(-6deg);}100%{transform:rotate(2deg);}}
+  @keyframes typeRight{0%{transform:rotate(6deg);}100%{transform:rotate(-2deg);}}
+
+  .hand{
+    position:absolute;bottom:-6px;
+    width:100%;height:14px;
+    background:#d9a86b;
+    border-radius:50%;
+    opacity:0.85;
+  }
+
+  /* vignette */
+  .vignette{
+    position:absolute;inset:0;
+    background:radial-gradient(ellipse at 50% 45%, transparent 45%, rgba(0,0,0,0.65) 100%);
+    pointer-events:none;
+  }
 </style>
 </head>
 <body>
-<div class="scene">
-<div class="grid"></div>
-<div class="monitor left"><div class="screen" id="code"></div></div>
-<div class="monitor center"><div class="screen" id="term"></div></div>
-<div class="monitor right"><div class="screen">Codeforces
-Rating: 902
-Rank: Newbie
-Target: Specialist</div></div>
-<div class="desk"></div>
-<kbd></kbd>
-<div class="person">
-<div class="head"></div><div class="body"></div>
-<div class="arm l"></div><div class="arm r"></div>
-</div>
-</div>
-<script>
-const code=`#include <bits/stdc++.h>
-using namespace std;
 
-int main(){
- int n;
- cin>>n;
- vector<int>a(n);
- for(int &x:a)cin>>x;
- sort(a.begin(),a.end());
- cout<<a.back();
-}`;
-let i=0;
-setInterval(()=>{
-document.getElementById('code').innerHTML=code.substring(0,i)+'<span class="cursor">|</span>';
-i=(i+1)%(code.length+1);
-},35);
-const lines=["$ g++ solution.cpp -O2","Compiling...","Build Successful","$ ./solution","Accepted ✓"];
-let j=0;
-setInterval(()=>{
-document.getElementById('term').textContent=lines.slice(0,j).join("\n");
-j=(j+1)%(lines.length+1);
-},700);
+<div class="stage" id="stage">
+  <div class="grid"></div>
+  <div class="particles" id="particles"></div>
+  <div class="smoke"></div>
+
+  <div class="scene">
+    <div class="rays"></div>
+    <div class="glow-bounce"></div>
+
+    <div class="monitors">
+      <div class="monitor mon-left">
+        <div class="screen-label">solution.cpp</div>
+        <div class="editor" id="editorText"></div>
+      </div>
+      <div class="monitor mon-center">
+        <div class="screen-label">bash — zsh</div>
+        <div class="terminal" id="terminalText"></div>
+      </div>
+      <div class="monitor mon-right">
+        <div class="screen-label">Codeforces Dashboard</div>
+        <div class="dash">
+          <h4>Rating Overview</h4>
+          <div class="stat-row">
+            <div class="stat"><div class="num" id="ratingNum">2634</div><div class="lab">RATING</div></div>
+            <div class="stat"><div class="num">1247</div><div class="lab">SOLVED</div></div>
+            <div class="stat"><div class="num">86</div><div class="lab">CONTESTS</div></div>
+          </div>
+          <h4>Recent Contest Graph</h4>
+          <div class="chart-wrap">
+            <svg viewBox="0 0 220 90" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="fillGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#ff8a3d" stop-opacity="0.7"/>
+                  <stop offset="100%" stop-color="#ff8a3d" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <polygon class="chart-fill" points="0,80 20,68 40,72 60,50 80,58 100,34 120,44 140,22 160,30 180,14 200,20 220,10 220,90 0,90"/>
+              <polyline class="chart-line" points="0,80 20,68 40,72 60,50 80,58 100,34 120,44 140,22 160,30 180,14 200,20 220,10"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="desk">
+      <div class="desk-item keyboard" id="keyboard"></div>
+      <div class="desk-item mouse"></div>
+      <div class="desk-item mug"></div>
+      <div class="desk-item headphones"></div>
+      <div class="desk-item phone"></div>
+      <div class="desk-item notebook"></div>
+    </div>
+
+    <div class="figure">
+      <div class="arm left"><div class="hand"></div></div>
+      <div class="arm right"><div class="hand"></div></div>
+      <div class="torso"></div>
+      <div class="hood"></div>
+    </div>
+  </div>
+
+  <div class="vignette"></div>
+</div>
+
+<script>
+  // ---------- Particles ----------
+  const particlesEl = document.getElementById('particles');
+  const particleCount = 40;
+  for(let i=0;i<particleCount;i++){
+    const p = document.createElement('div');
+    p.className = 'p';
+    const size = 1 + Math.random()*3;
+    p.style.width = size+'px';
+    p.style.height = size+'px';
+    p.style.left = Math.random()*100+'%';
+    p.style.bottom = (Math.random()*10)+'%';
+    p.style.animationDuration = (6+Math.random()*8)+'s';
+    p.style.animationDelay = (Math.random()*8)+'s';
+    particlesEl.appendChild(p);
+  }
+
+  // ---------- Keyboard key lighting (random flowing keys) ----------
+  const kb = document.getElementById('keyboard');
+  const totalKeys = 16*4;
+  for(let i=0;i<totalKeys;i++){
+    const k = document.createElement('div');
+    k.className = 'kb-key';
+    k.style.animationDelay = (Math.random()*2.6)+'s';
+    if(Math.random() < 0.85) k.classList.add('lit');
+    kb.appendChild(k);
+  }
+
+  // ---------- Editor typing simulation ----------
+  const codeLines = [
+`<span class="com">// Codeforces Div.1 F — segment tree optimization</span>`,
+`<span class="kw">#include</span> <span class="str">&lt;bits/stdc++.h&gt;</span>`,
+`<span class="kw">using namespace</span> std;`,
+``,
+`<span class="type">struct</span> <span class="fn">SegTree</span> {`,
+`    vector&lt;<span class="type">long long</span>&gt; tree, lazy;`,
+`    <span class="type">int</span> n;`,
+``,
+`    <span class="fn">void</span> <span class="fn">build</span>(<span class="type">int</span> node, <span class="type">int</span> l, <span class="type">int</span> r) {`,
+`        <span class="kw">if</span> (l == r) { tree[node] = a[l]; <span class="kw">return</span>; }`,
+`        <span class="type">int</span> mid = (l + r) &gt;&gt; 1;`,
+`        build(node*2, l, mid);`,
+`        build(node*2+1, mid+1, r);`,
+`        tree[node] = tree[node*2] + tree[node*2+1];`,
+`    }`,
+``,
+`    <span class="fn">void</span> <span class="fn">update</span>(<span class="type">int</span> node, <span class="type">int</span> l, <span class="type">int</span> r, <span class="type">int</span> ql, <span class="type">int</span> qr, <span class="type">long long</span> val) {`,
+`        <span class="kw">if</span> (qr &lt; l || r &lt; ql) <span class="kw">return</span>;`,
+`        <span class="kw">if</span> (ql &lt;= l &amp;&amp; r &lt;= qr) { tree[node] += val; <span class="kw">return</span>; }`,
+`        propagate(node, l, r);`,
+`        <span class="type">int</span> mid = (l + r) &gt;&gt; 1;`,
+`        update(node*2, l, mid, ql, qr, val);`,
+`        update(node*2+1, mid+1, r, ql, qr, val);`,
+`    }`,
+`};`,
+``,
+`<span class="type">int</span> <span class="fn">main</span>() {`,
+`    ios::sync_with_stdio(<span class="kw">false</span>);`,
+`    cin.tie(<span class="kw">nullptr</span>);`,
+`    <span class="type">int</span> n, q; cin &gt;&gt; n &gt;&gt; q;`,
+`    SegTree st(n);`,
+`    <span class="kw">while</span> (q--) { <span class="com">// process queries</span>`,
+`        st.update(1, 0, n-1, l, r, val);`,
+`    }`,
+`    <span class="kw">return</span> 0;`,
+`}`
+  ];
+
+  const editorEl = document.getElementById('editorText');
+  let lineIdx = 0, charIdx = 0, renderedHTML = "";
+
+  function typeEditor(){
+    if(lineIdx >= codeLines.length){
+      setTimeout(()=>{ renderedHTML=""; lineIdx=0; charIdx=0; editorEl.innerHTML=""; typeEditor(); }, 1800);
+      return;
+    }
+    const fullLine = codeLines[lineIdx];
+    // strip tags length-aware typing: reveal by rendering full line progressively using a temp div text length
+    const plain = fullLine.replace(/<[^>]*>/g,'');
+    if(charIdx <= plain.length){
+      // Build partial: naive approach — reveal whole line quickly after certain chars for perf, but simulate char by char using textContent overlay
+      let partial = "";
+      let count = 0;
+      let inTag = false;
+      for(let ch of fullLine){
+        if(ch === '<') inTag = true;
+        if(!inTag) count++;
+        partial += ch;
+        if(ch === '>') inTag = false;
+        if(!inTag && count >= charIdx) break;
+      }
+      editorEl.innerHTML = renderedHTML + partial + '<span class="cursor-blink"></span>';
+      charIdx++;
+      setTimeout(typeEditor, 14 + Math.random()*22);
+    } else {
+      renderedHTML += fullLine + "\n";
+      lineIdx++;
+      charIdx = 0;
+      // auto-scroll effect: keep last ~16 lines
+      const linesArr = renderedHTML.split("\n");
+      if(linesArr.length > 15){
+        renderedHTML = linesArr.slice(linesArr.length-15).join("\n");
+      }
+      setTimeout(typeEditor, 40);
+    }
+  }
+  typeEditor();
+
+  // ---------- Terminal simulation ----------
+  const terminalEl = document.getElementById('terminalText');
+  const termSequence = [
+    {t:'<span class="prompt">$</span> g++ solution.cpp -O2 -o sol', d:900},
+    {t:'<span class="dim">Compiling...</span>', d:1100},
+    {t:'<span class="dim">Compiling</span><span class="dim">.</span><span class="dim">.</span><span class="dim">.</span> <span class="ok">done</span>', d:700},
+    {t:'<span class="prompt">$</span> ./run_tests.sh', d:900},
+    {t:'<span class="dim">Running Tests...</span>', d:1200},
+    {t:'Test 1: <span class="ok">Accepted</span> ✓  (12ms)', d:500},
+    {t:'Test 2: <span class="ok">Accepted</span> ✓  (18ms)', d:500},
+    {t:'Test 3: <span class="ok">Accepted</span> ✓  (9ms)', d:500},
+    {t:'Test 4: <span class="ok">Accepted</span> ✓  (21ms)', d:700},
+    {t:'<span class="ok">All tests passed — Accepted ✓</span>', d:2200},
+  ];
+
+  async function runTerminal(){
+    terminalEl.innerHTML = "";
+    let buffer = [];
+    for(const step of termSequence){
+      buffer.push(step.t);
+      if(buffer.length > 9) buffer.shift();
+      terminalEl.innerHTML = buffer.join("<br>") + '<span class="cursor-blink"></span>';
+      await new Promise(r=>setTimeout(r, step.d));
+    }
+    await new Promise(r=>setTimeout(r, 900));
+    runTerminal();
+  }
+  runTerminal();
+
+  // ---------- Rating counter subtle flicker ----------
+  const ratingEl = document.getElementById('ratingNum');
+  const baseRating = 2634;
+  setInterval(()=>{
+    const delta = Math.floor(Math.random()*5)-2;
+    ratingEl.textContent = baseRating + delta;
+  }, 2600);
 </script>
+
 </body>
 </html>
