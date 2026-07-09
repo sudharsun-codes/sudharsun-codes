@@ -35,11 +35,11 @@
   </a>
 </p>
 
-<!-- <p align="center">
+<p align="center">
   <a href="https://leetcode.com/u/NaanumCoderDhaan/">
     <img src="https://leetcard.jacoblin.cool/NaanumCoderDhaan?theme=dark&font=Baloo&ext=contest" />
   </a>
-</p> -->
+</p> 
 
 <p align="center">
   <a href="https://www.geeksforgeeks.org/profile/sudharsujn2s">
@@ -84,5 +84,5 @@
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/platane/platane/output/github-contribution-grid-snake.svg">
   <img alt="github contribution grid snake animation" src="https://raw.githubusercontent.com/platane/platane/output/github-contribution-grid-snake.svg">
 </picture>
-
+*"The quieter you become, the more you are able to hear."* 🛡️
 </div>
