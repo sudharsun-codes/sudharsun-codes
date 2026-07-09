@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyber Coder</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0b0b0b;overflow:hidden;font-family:Consolas,monospace}
+.scene{position:relative;width:100vw;height:100vh;background:radial-gradient(circle,#2b1800 0,#090909 70%)}
+.grid{position:absolute;inset:0;background:
+linear-gradient(rgba(255,170,0,.08) 1px,transparent 1px),
+linear-gradient(90deg,rgba(255,170,0,.08) 1px,transparent 1px);
+background-size:40px 40px;animation:grid 8s linear infinite}
+@keyframes grid{to{transform:translateY(40px)}}
+.monitor{position:absolute;width:220px;height:140px;background:#111;border:2px solid #ffb000;border-radius:10px;box-shadow:0 0 25px rgba(255,176,0,.5)}
+.left{left:18%;top:22%}.center{left:40%;top:18%}.right{left:62%;top:22%}
+.screen{padding:10px;color:#6dff6d;white-space:pre-wrap}
+.desk{position:absolute;left:18%;bottom:120px;width:64%;height:18px;background:#3b2a17}
+.person{position:absolute;left:48%;bottom:138px;width:90px;height:170px}
+.head{width:34px;height:34px;border-radius:50%;background:#222;margin:0 auto}
+.body{width:56px;height:95px;background:#191919;border-radius:18px;margin:0 auto}
+.arm{position:absolute;width:14px;height:68px;background:#222;top:42px;border-radius:10px}
+.l{left:6px;transform-origin:top;animation:type .3s infinite alternate}
+.r{right:6px;transform-origin:top;animation:type .3s infinite alternate-reverse}
+@keyframes type{from{transform:rotate(18deg)}to{transform:rotate(35deg)}}
+kbd{display:block;position:absolute;left:44%;bottom:105px;width:180px;height:18px;border-radius:5px;background:linear-gradient(90deg,#ff6a00,#ffd000,#ff6a00);background-size:300% 100%;animation:rgb 3s linear infinite}
+@keyframes rgb{to{background-position:300% 0}}
+.cursor{animation:blink 1s steps(1) infinite}@keyframes blink{50%{opacity:0}}
+</style>
+</head>
+<body>
+<div class="scene">
+<div class="grid"></div>
+<div class="monitor left"><div class="screen" id="code"></div></div>
+<div class="monitor center"><div class="screen" id="term"></div></div>
+<div class="monitor right"><div class="screen">Codeforces
+Rating: 902
+Rank: Newbie
+Target: Specialist</div></div>
+<div class="desk"></div>
+<kbd></kbd>
+<div class="person">
+<div class="head"></div><div class="body"></div>
+<div class="arm l"></div><div class="arm r"></div>
+</div>
+</div>
+<script>
+const code=`#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+ int n;
+ cin>>n;
+ vector<int>a(n);
+ for(int &x:a)cin>>x;
+ sort(a.begin(),a.end());
+ cout<<a.back();
+}`;
+let i=0;
+setInterval(()=>{
+document.getElementById('code').innerHTML=code.substring(0,i)+'<span class="cursor">|</span>';
+i=(i+1)%(code.length+1);
+},35);
+const lines=["$ g++ solution.cpp -O2","Compiling...","Build Successful","$ ./solution","Accepted ✓"];
+let j=0;
+setInterval(()=>{
+document.getElementById('term').textContent=lines.slice(0,j).join("\n");
+j=(j+1)%(lines.length+1);
+},700);
+</script>
+</body>
+</html>
