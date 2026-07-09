@@ -4,7 +4,7 @@
 
 ##
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&width=435&lines=Hi+there+%F0%9F%91%8B+It's+me+Sudharsun+V;Competitive+Programmer+at+CodeForces;Backend+Engineer;Aspiring+Software+Engineer+at+HFT's;Student+at+R.M.K+Engineering+College)](https://git.io/typing-svg)
-<img align="right" width="370" height="290" src="https://user-images.githubusercontent.com/74038190/225813708-98b745f2-7d22-48cf-9150-083f1b00d6c9.gif">
+<img align="right" width="370" height="290" src="https://raw.githubusercontent.com/sudharsun-codes/sudharsun-codes/main/side.svg">
 - 🔭 Here's my [Github](https://github.com/sudharsun-codes)                                                 
 - 🌱 I’m currently learning DSA and Competetive Programming to my workflow
 - Engineeing at [<img src="https://upload.wikimedia.org/wikipedia/commons/1/19/RMK_Engineering_College.gif" height="24">](https://www.rmkec.ac.in/2023/),
