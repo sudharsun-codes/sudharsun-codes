@@ -184,7 +184,7 @@
 <text x="676" y="187" font-family="'Courier New',monospace" font-size="10.5" fill="#ffb300">$ </text>
 <text x="691" y="187" font-family="'Courier New',monospace" font-size="10.5" fill="#e0e0e0">cf rating</text>
 
-<text x="676" y="205" font-family="'Courier New',monospace" font-size="10.5" fill="#28c840">Rating: 1-00 (New bie)</text>
+<text x="676" y="205" font-family="'Courier New',monospace" font-size="10.5" fill="#28c840">Rating: 1000 (New bie)</text>
 
     <!-- Blinking cursor -->
     <rect x="676" y="213" width="7" height="12" fill="#ffb300" rx="1">
