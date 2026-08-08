@@ -29,16 +29,16 @@
 
 ## 📊 Competitive Programming Dashboard
 
-`<p align="center">`
- ` <a href="https://codeforces.com/profile/Sudharsun.codes">`
-   ` <img src="https://codeforces-stats-vlx.vercel.app/api/card?username=Sudharsun.codes&theme=tokyonight&darkMode=false" />`
- ` </a>`
-`</p>`
-`<p align="center">`
- `<a href="https://codeforces.com/profile/Sudharsun.codes">`
-   ` <img src="https://codeforces-stats-vlx.vercel.app/api/graph?username=Sudharsun.codes&theme=tokyonight&darkMode=false" />
-  </a>`
-`</p>`
+<!-- <p align="center">
+ <a href="https://codeforces.com/profile/Sudharsun.codes">
+    <img src="https://codeforces-stats-vlx.vercel.app/api/card?username=Sudharsun.codes&theme=tokyonight&darkMode=false" />
+  </a>
+</p>
+<p align="center">
+ <a href="https://codeforces.com/profile/Sudharsun.codes">
+   <img src="https://codeforces-stats-vlx.vercel.app/api/graph?username=Sudharsun.codes&theme=tokyonight&darkMode=false" />
+  </a>
+</p>-->
 
 <p align="center">
   <a href="https://leetcode.com/u/NaanumCoderDhaan/">
