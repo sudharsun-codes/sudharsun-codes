@@ -76,7 +76,7 @@
 <p align="center">
   <a href="https://github.com/sudharsun-codes">GitHub</a> •
   <a href="https://codeforces.com/profile/Sudharsun.codes">Codeforces</a> •
-  <a href="https://leetcode.com/u/NaanumCoderDhaan/">LeetCode</a> •
+  <a href="https://leetcode.com/u/sudharsun-codes/">LeetCode</a> •
   <a href="https://www.geeksforgeeks.org/profile/sudharsujn2s">GeeksforGeeks</a>
 </p>
 
